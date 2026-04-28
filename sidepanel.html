@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Design Inspector</title>
+  <link rel="stylesheet" href="sidepanel.css" />
+</head>
+<body>
+
+  <!-- ── Header ─────────────────────────────────────────────────────────── -->
+  <header class="panel-header">
+    <div class="header-brand">
+      <svg class="brand-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="brand-name">Design Inspector</span>
+    </div>
+    <div class="header-actions">
+      <button id="btn-export" class="btn-icon" title="Export as JSON">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 15V3m0 12l-4-4m4 4l4-4M2 17l.621 2.485A2 2 0 004.561 21h14.878a2 2 0 001.94-1.515L22 17"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ── Inspector Toggle ────────────────────────────────────────────────── -->
+  <section class="inspector-bar">
+    <div class="inspector-status" id="inspector-status">
+      <span class="status-dot" id="status-dot"></span>
+      <span id="status-text">Inspector Off</span>
+    </div>
+    <button id="btn-toggle-inspector" class="btn-inspector">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-crosshair">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M12 2v4M12 18v4M2 12h4M18 12h4"/>
+      </svg>
+      Enable Inspector
+    </button>
+  </section>
+
+  <!-- ── Tab Navigation ─────────────────────────────────────────────────── -->
+  <nav class="tab-nav" id="tab-nav">
+    <button class="tab-btn active" data-tab="element">Element</button>
+    <button class="tab-btn" data-tab="typography">Type</button>
+    <button class="tab-btn" data-tab="colors">Colors</button>
+    <button class="tab-btn" data-tab="assets">Assets</button>
+    <button class="tab-btn" data-tab="a11y">A11y</button>
+  </nav>
+
+  <!-- ── Tab Content ─────────────────────────────────────────────────────── -->
+  <main class="tab-content">
+
+    <!-- Element Tab -->
+    <div class="tab-pane active" id="tab-element">
+      <div class="empty-state" id="empty-element">
+        <div class="empty-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+            <circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/>
+          </svg>
+        </div>
+        <p class="empty-title">No element selected</p>
+        <p class="empty-sub">Enable the inspector and click any element on the page.</p>
+      </div>
+      <div class="element-data" id="element-data" style="display:none">
+
+        <!-- Tag Badge -->
+        <div class="element-meta">
+          <span class="tag-badge" id="el-tag"></span>
+          <span class="el-id" id="el-id"></span>
+          <div class="el-classes" id="el-classes"></div>
+        </div>
+
+        <!-- Dimensions -->
+        <div class="section-card">
+          <div class="section-header" data-accordion="dimensions">
+            <span>Dimensions</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="section-body" id="acc-dimensions">
+            <div class="dim-grid">
+              <div class="dim-cell">
+                <span class="dim-label">W</span>
+                <span class="dim-value copyable" id="el-width">—</span>
+              </div>
+              <div class="dim-cell">
+                <span class="dim-label">H</span>
+                <span class="dim-value copyable" id="el-height">—</span>
+              </div>
+              <div class="dim-cell">
+                <span class="dim-label">X</span>
+                <span class="dim-value copyable" id="el-x">—</span>
+              </div>
+              <div class="dim-cell">
+                <span class="dim-label">Y</span>
+                <span class="dim-value copyable" id="el-y">—</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Typography -->
+        <div class="section-card">
+          <div class="section-header" data-accordion="el-typography">
+            <span>Typography</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="section-body" id="acc-el-typography">
+            <div class="prop-list" id="el-typography-props"></div>
+          </div>
+        </div>
+
+        <!-- Colors -->
+        <div class="section-card">
+          <div class="section-header" data-accordion="el-colors">
+            <span>Colors</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="section-body" id="acc-el-colors">
+            <div class="prop-list" id="el-color-props"></div>
+          </div>
+        </div>
+
+        <!-- Spacing -->
+        <div class="section-card">
+          <div class="section-header" data-accordion="el-spacing">
+            <span>Spacing & Layout</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="section-body" id="acc-el-spacing">
+            <div class="prop-list" id="el-spacing-props"></div>
+          </div>
+        </div>
+
+        <!-- Advanced -->
+        <div class="section-card">
+          <div class="section-header" data-accordion="el-advanced">
+            <span>Advanced</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="section-body" id="acc-el-advanced">
+            <div class="prop-list" id="el-advanced-props"></div>
+          </div>
+        </div>
+
+        <!-- Accessibility -->
+        <div class="section-card">
+          <div class="section-header" data-accordion="el-a11y">
+            <span>Accessibility</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="section-body" id="acc-el-a11y">
+            <div class="prop-list" id="el-a11y-props"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Typography Tab -->
+    <div class="tab-pane" id="tab-typography">
+      <div class="scan-bar">
+        <span class="scan-hint">Scan full page for typography tokens</span>
+        <button class="btn-scan" data-scan="typography">Scan</button>
+      </div>
+      <div class="empty-state" id="empty-typography">
+        <div class="empty-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+            <path d="M4 7V4h16v3M9 20h6M12 4v16"/>
+          </svg>
+        </div>
+        <p class="empty-title">No typography data</p>
+        <p class="empty-sub">Click Scan to extract all fonts and text styles from the page.</p>
+      </div>
+      <div id="typography-data" style="display:none">
+        <div class="section-card">
+          <div class="section-header" data-accordion="type-families">
+            <span>Font Families</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="section-body" id="acc-type-families">
+            <div id="type-families-list" class="chip-list"></div>
+          </div>
+        </div>
+        <div class="section-card">
+          <div class="section-header" data-accordion="type-sizes">
+            <span>Font Sizes</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="section-body" id="acc-type-sizes">
+            <div id="type-sizes-list" class="chip-list"></div>
+          </div>
+        </div>
+        <div class="section-card">
+          <div class="section-header" data-accordion="type-weights">
+            <span>Font Weights</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="section-body" id="acc-type-weights">
+            <div id="type-weights-list" class="chip-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Colors Tab -->
+    <div class="tab-pane" id="tab-colors">
+      <div class="scan-bar">
+        <span class="scan-hint">Extract all color tokens from the page</span>
+        <button class="btn-scan" data-scan="colors">Scan</button>
+      </div>
+      <div class="empty-state" id="empty-colors">
+        <div class="empty-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+            <circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 010 20"/>
+            <path d="M12 7a5 5 0 010 10"/>
+          </svg>
+        </div>
+        <p class="empty-title">No color data</p>
+        <p class="empty-sub">Click Scan to extract the full color palette.</p>
+      </div>
+      <div id="colors-data" style="display:none">
+        <div class="section-card">
+          <div class="section-header" data-accordion="colors-text">
+            <span>Text Colors</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="section-body" id="acc-colors-text">
+            <div id="colors-text-list" class="color-swatch-list"></div>
+          </div>
+        </div>
+        <div class="section-card">
+          <div class="section-header" data-accordion="colors-bg">
+            <span>Background Colors</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="section-body" id="acc-colors-bg">
+            <div id="colors-bg-list" class="color-swatch-list"></div>
+          </div>
+        </div>
+        <div class="section-card">
+          <div class="section-header" data-accordion="colors-border">
+            <span>Border Colors</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="section-body" id="acc-colors-border">
+            <div id="colors-border-list" class="color-swatch-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Assets Tab -->
+    <div class="tab-pane" id="tab-assets">
+      <div class="scan-bar">
+        <span class="scan-hint">Discover images, SVGs & background assets</span>
+        <button class="btn-scan" data-scan="assets">Scan</button>
+      </div>
+      <div class="empty-state" id="empty-assets">
+        <div class="empty-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+            <path d="M21 15l-5-5L5 21"/>
+          </svg>
+        </div>
+        <p class="empty-title">No assets found</p>
+        <p class="empty-sub">Click Scan to find all image and SVG assets.</p>
+      </div>
+      <div id="assets-data" style="display:none">
+        <div class="section-card">
+          <div class="section-header" data-accordion="assets-images">
+            <span id="assets-images-label">Images (0)</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="section-body" id="acc-assets-images">
+            <div id="assets-images-list" class="asset-list"></div>
+          </div>
+        </div>
+        <div class="section-card">
+          <div class="section-header" data-accordion="assets-svgs">
+            <span id="assets-svgs-label">Inline SVGs (0)</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="section-body" id="acc-assets-svgs">
+            <div id="assets-svgs-list" class="asset-list"></div>
+          </div>
+        </div>
+        <div class="section-card">
+          <div class="section-header" data-accordion="assets-bg">
+            <span id="assets-bg-label">Background Images (0)</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="section-body" id="acc-assets-bg">
+            <div id="assets-bg-list" class="asset-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- A11y Tab -->
+    <div class="tab-pane" id="tab-a11y">
+      <div class="scan-bar">
+        <span class="scan-hint">Run full accessibility audit on page</span>
+        <button class="btn-scan" data-scan="accessibility">Audit</button>
+      </div>
+      <div class="empty-state" id="empty-a11y">
+        <div class="empty-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+            <circle cx="12" cy="4" r="2"/><path d="M15.89 8.11A5 5 0 1012 19v-7"/>
+            <path d="M9.5 14l-2.5 4M14.5 14l2.5 4"/>
+          </svg>
+        </div>
+        <p class="empty-title">No audit data</p>
+        <p class="empty-sub">Click Audit to run a WCAG accessibility check on the page.</p>
+      </div>
+      <div id="a11y-data" style="display:none">
+        <div class="a11y-summary" id="a11y-summary"></div>
+        <div id="a11y-issues-list"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ── Copy Tooltip ─────────────────────────────────────────────────────── -->
+  <div class="copy-tooltip" id="copy-tooltip">Copied!</div>
+
+  <script src="sidepanel.js"></script>
+</body>
+</html>
